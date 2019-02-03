@@ -94,10 +94,4 @@ class JSONDataTransformer
         $this->decodedData = $decodedData;
         return $this;
     }
-
-
-
-
-
-
 }

@@ -7,17 +7,25 @@
  */
 namespace Model\Stocks;
 
+/**
+ * Class Calculator
+ * @package Model\Stocks
+ */
 class Calculator
 {
-    protected $previousValue;
-    protected $value;
-
-    public function __construct($previousValue, $value)
+    /**
+     * Calculator constructor.
+     */
+    private function __construct()
     {
-        $this->setPreviousValue($previousValue)->setValue($value);
     }
 
-    public function calculateRate()
+    /**
+     * calculateRate
+     * growth rate as percentage.
+     * @return float|int
+     */
+    public static function calculateRate($previousValue, $value)
     {
         $rate = 0;
 
@@ -26,41 +34,5 @@ class Calculator
         }
 
         return $rate;
-    }
-
-    //GETTERS AND SETTERS
-
-    /**
-     * @return mixed
-     */
-    public function getPreviousValue()
-    {
-        return $this->previousValue;
-    }
-
-    /**
-     * @param mixed $previousValue
-     */
-    public function setPreviousValue($previousValue)
-    {
-        $this->previousValue = $previousValue;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
     }
 }

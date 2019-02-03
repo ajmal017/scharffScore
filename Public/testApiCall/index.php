@@ -7,11 +7,14 @@
  */
 
 require_once("../includes/loaderBootstrap.php");
-//require_once("../../Model/IEXApi/APIClient.php");
 
 //Set URL filter for test
-$stockController = new \Controller\Stocks\Stock(['aapl', 'msft']);
-echo $stockController->queryStock();
+$IEXApiControllerObj = new \Controller\IEXApi\IEXApiController(['aapl', 'msft']);
+//$stockControllerObj = new \Controller\Stocks\StockController();
+$jsonTransformerObj = new \Model\Stocks\JSONDataTransformer($IEXApiControllerObj->query());
+$ScharffScoreObj = new \Model\Stocks\ScharffScore($jsonTransformerObj->getData());
+
+//echo $ScharffScoreObj;
 //,
 //There are 6 categories for the score:
 // Equity BVPS (shareholder equity)
