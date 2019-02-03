@@ -21,6 +21,8 @@ class ScharffScore
             ->processData();
 
         echo "<pre>" . print_r($this->getScores(), true) . "</pre>";
+        echo "<pre>" . print_r($stockData, true) . "</pre>";
+
     }
 
     protected function processData()
@@ -46,71 +48,80 @@ class ScharffScore
         return $this;
     }
 
-    protected function processEPSScore($sticker)
-    {
+    protected function processScore($sticker, $iexArrayName, $iexFieldName, $scharffScoreName, $options = array()) {
+        $default = [
+            'multiplier' => false,
+            'multiplerAmount' => 1,
+            'time' => '12'
+        ];
+
+        $options = array_merge($default, $options);
+
         $score = 0;
-        //if earnings exist calculate the rate for this past year.
-        if (isset($this->getStockData()[$sticker]['earnings']['earnings'])) {
-            $arrayCount = count($this->getStockData()[$sticker]['earnings']['earnings']);
+        //if exist calculate the rate for this past year.
+        if (isset($this->getStockData()[$sticker][$iexArrayName][$iexArrayName])) {
+            $arrayCount = count($this->getStockData()[$sticker][$iexArrayName][$iexArrayName]);
+            $previousValue = $this->getStockData()[$sticker][$iexArrayName][$iexArrayName][$arrayCount - 1][$iexFieldName];
+            $value = $this->getStockData()[$sticker][$iexArrayName][$iexArrayName][0][$iexFieldName];
+
+            if ($options['multiplier']) {
+                $previousValue *= $options['multiplierAmount'];
+                $value *= $options['multiplierAmount'];
+            }
+
             $score += Calculator::calculateRate(
-                $this->getStockData()[$sticker]['earnings']['earnings'][$arrayCount - 1]['actualEPS'],
-                $this->getStockData()[$sticker]['earnings']['earnings'][0]['actualEPS']
+                $previousValue,
+                $value,
+                isset($options['time']) ? $options['time'] : 12 // 12 months
             );
         }
 
-        $this->setScores($sticker, ['eps' => $score]);
+        $this->setScores($sticker, [$scharffScoreName => $score]);
 
+        return $this;
+    }
+
+    protected function processEPSScore($sticker)
+    {
+        $this->processScore(
+            $sticker,
+            'earnings',
+            'actualEPS',
+            'eps'
+        );
         return $this;
     }
 
     protected function processCashFlowScore($sticker)
     {
-        $score = 0;
-        //if earnings exist calculate the rate for this past year.
-        if (isset($this->getStockData()[$sticker]['financials']['financials'])) {
-            $arrayCount = count($this->getStockData()[$sticker]['financials']['financials']);
-            $score += Calculator::calculateRate(
-                $this->getStockData()[$sticker]['financials']['financials'][$arrayCount - 1]['cashFlow'],
-                $this->getStockData()[$sticker]['financials']['financials'][0]['cashFlow']
-            );
-        }
-
-        $this->setScores($sticker, ['cashFlow' => $score]);
-
+        $this->processScore(
+            $sticker,
+            'financials',
+            'cashFlow',
+            'cashFlow'
+        );
         return $this;
     }
 
     protected function processSalesScore($sticker)
     {
-        $score = 0;
-        //if earnings exist calculate the rate for this past year.
-        if (isset($this->getStockData()[$sticker]['financials']['financials'])) {
-            $arrayCount = count($this->getStockData()[$sticker]['financials']['financials']);
-            $score += Calculator::calculateRate(
-                $this->getStockData()[$sticker]['financials']['financials'][$arrayCount - 1]['netIncome'],
-                $this->getStockData()[$sticker]['financials']['financials'][0]['netIncome']
-            );
-        }
-
-        $this->setScores($sticker, ['sales' => $score]);
-
+        $this->processScore(
+            $sticker,
+            'financials',
+            'netIncome',
+            'sales'
+        );
         return $this;
     }
 
     protected function processEquityScore($sticker)
     {
-        $score = 0;
-        //if earnings exist calculate the rate for this past year.
-        if (isset($this->getStockData()[$sticker]['financials']['financials'])) {
-            $arrayCount = count($this->getStockData()[$sticker]['financials']['financials']);
-            $score += Calculator::calculateRate(
-                $this->getStockData()[$sticker]['financials']['financials'][$arrayCount - 1]['shareholderEquity'],
-                $this->getStockData()[$sticker]['financials']['financials'][0]['shareholderEquity']
-            );
-        }
-
-        $this->setScores($sticker, ['equity' => $score]);
-
+        $this->processScore(
+            $sticker,
+            'finanncials',
+            'shareholderEquity',
+            'equity'
+        );
         return $this;
     }
 
@@ -162,9 +173,4 @@ class ScharffScore
 
         return $this;
     }
-
-
-
-
-
 }

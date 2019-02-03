@@ -22,17 +22,21 @@ class Calculator
 
     /**
      * calculateRate
-     * growth rate as percentage.
-     * @return float|int
+     * growth rate percentage represented.
+     * @return double   
      */
-    public static function calculateRate($previousValue, $value)
+    public static function calculateRate($previousValue, $value, $time = 12)
     {
         $rate = 0;
 
-        if ($previousValue <= $value) {
-            $rate = ((($value - $previousValue)/$previousValue) * 100) / 10; //linear growth rate.
+        if ($previousValue <= 0 || !empty($previousValue)) {
+            $previousValue = 1;
         }
 
-        return $rate;
+        if ($previousValue <= $value) {
+            $rate = (pow($value/$previousValue, 1/$time) - 1); //linear growth rate.
+        }
+
+        return $rate * 100;
     }
 }
