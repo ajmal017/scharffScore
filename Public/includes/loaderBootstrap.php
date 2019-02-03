@@ -6,8 +6,8 @@
  * Time: 5:14 PM
  */
 
-CONST ROOT_DIR = '/Users/willscharff/PhpstormProjects/stockApp';
-CONST MODEL_PATH = ROOT_DIR . '/Model/';
+CONST ROOT_DIR        = '/Users/willscharff/PhpstormProjects/stockApp';
+CONST MODEL_PATH      = ROOT_DIR . '/Model/';
 CONST CONTROLLER_PATH = ROOT_DIR . '/Controller/';
 
 require_once ROOT_DIR . "/vendor/autoload.php";

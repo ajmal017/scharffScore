@@ -6,12 +6,12 @@
  * Time: 5:24 PM
  */
 
-namespace Controller\Stocks\Stock;
+namespace Controller\Stocks;
 
-use Model\IEXApi\APIClient\APIClient;
+use Model\IEXApi\APIClient;
 
 class Stock
-{//https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,fb&types=quote,news,chart&range=1m&last=5
+{
     const IEX_FILTER_BATCH_QUERY = 'stock/market/batch';
     const IEX_FILTER_DEFAULT_QUERY = 'types=peers,company,logo,earnings,financials&period=quarterly';
 

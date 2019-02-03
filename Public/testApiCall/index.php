@@ -10,7 +10,7 @@ require_once("../includes/loaderBootstrap.php");
 //require_once("../../Model/IEXApi/APIClient.php");
 
 //Set URL filter for test
-$stockController = new \Controller\Stocks\Stock\Stock(['aapl', 'msft']);
+$stockController = new \Controller\Stocks\Stock(['aapl', 'msft']);
 echo $stockController->queryStock();
 //,
 //There are 6 categories for the score:
