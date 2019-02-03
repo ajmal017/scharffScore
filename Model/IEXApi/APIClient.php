@@ -6,7 +6,7 @@
  * Time: 5:10 PM
  */
 
-require "../../vendor/autoload.php";
+namespace Model\IEXApi\APIClient;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -29,7 +29,7 @@ class APIClient
      * API_URL
      *
      */
-    const API_URL = "https://api.iextrading.com/1.0"; //Example: ?filter=symbol,volume,lastSalePrice will return only the three fields specified.
+    const API_URL = "https://api.iextrading.com/1.0/"; //Example: ?filter=symbol,volume,lastSalePrice will return only the three fields specified.
 
     /**
      * $filter
