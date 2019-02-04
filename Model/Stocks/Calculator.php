@@ -23,7 +23,7 @@ class Calculator
     /**
      * calculateRate
      * growth rate percentage represented.
-     * @return double   
+     * @return double
      */
     public static function calculateRate($previousValue, $value, $time = 12)
     {
@@ -38,5 +38,18 @@ class Calculator
         }
 
         return $rate * 100;
+    }
+
+    public static function caculateScharffScore($score)
+    {
+        $scharffScore = 0;
+        if ($score > 100) {
+            $scharffScore = 10;
+        }
+        else {
+            $scharffScore = $score/10;
+        }
+
+        return $scharffScore;
     }
 }

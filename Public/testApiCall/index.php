@@ -11,8 +11,8 @@ require_once("../includes/loaderBootstrap.php");
 //Set URL filter for test
 $IEXApiControllerObj = new \Controller\IEXApi\IEXApiController(['cgc', 'acb', 'aapl', 'msft', 'SANW', 'TYHT', 'SMPL', 'XLV']);
 //$stockControllerObj = new \Controller\Stocks\StockController();
-$jsonTransformerObj = new \Model\Stocks\JSONDataTransformer($IEXApiControllerObj->query());
-$ScharffScoreObj = new \Model\Stocks\ScharffScore($jsonTransformerObj->getData());
+$stockControllerObj = new \Controller\Stocks\StockController($IEXApiControllerObj->query());
+echo "<pre>" . print_r($stockControllerObj->getScores(), true) . "</pre>";
 
 //echo $ScharffScoreObj;
 //,

@@ -9,31 +9,72 @@
 namespace Controller\Stocks;
 
 use Model\Stocks\JSONDataTransformer;
+use Model\Stocks\ScharffScore;
 
 class StockController
 {
-    protected $stockData = array();
-    protected $calculator = null;
+    protected $stockJSONData = array();
+    protected $stockArrayData = array();
+    protected $scharffScore = null;
 
-    public function __construct($stockData)
+    public function __construct($stockJSONData)
     {
-        $this->setStockData($stockData);
+        $this->setStockJSONData($stockJSONData)
+            ->transformJSONData()
+            ->setScharffScore();
     }
 
+    public function getScores()
+    {
+        return $this->getScharffScore()->getScores();
+    }
+
+    protected function transformJSONData()
+    {
+        $jsonTransformerObj = new JSONDataTransformer($this->getStockJSONData());
+        $this->setStockArrayData($jsonTransformerObj->getData());
+        return $this;
+    }
 
     //Getters and Setters
 
-    public function getStockData()
+    public function getStockJSONData()
     {
-        return $this->stockData;
+        return $this->stockJSONData;
     }
 
 
-    public function setStockData($stockData)
+    public function setStockJSONData($stockJSONData)
     {
-        $this->stockData = $stockData;
+        $this->stockJSONData = $stockJSONData;
         return $this;
     }
+
+    public function getStockArrayData()
+    {
+        return $this->stockArrayData;
+    }
+
+    public function setStockArrayData($stockArrayData)
+    {
+        $this->stockArrayData = $stockArrayData;
+        return $this;
+    }
+
+    public function getScharffScore()
+    {
+        return $this->scharffScore;
+    }
+
+    public function setScharffScore()
+    {
+        $this->scharffScore = new ScharffScore($this->getStockArrayData());
+        return $this;
+    }
+
+
+
+
 
 
 

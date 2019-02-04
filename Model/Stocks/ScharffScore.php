@@ -19,10 +19,6 @@ class ScharffScore
     {
         $this->setStockData($stockData)
             ->processData();
-
-        echo "<pre>" . print_r($this->getScores(), true) . "</pre>";
-        echo "<pre>" . print_r($stockData, true) . "</pre>";
-
     }
 
     protected function processData()
@@ -58,6 +54,7 @@ class ScharffScore
         $options = array_merge($default, $options);
 
         $score = 0;
+
         //if exist calculate the rate for this past year.
         if (isset($this->getStockData()[$sticker][$iexArrayName][$iexArrayName])) {
             $arrayCount = count($this->getStockData()[$sticker][$iexArrayName][$iexArrayName]);
@@ -76,7 +73,8 @@ class ScharffScore
             );
         }
 
-        $this->setScores($sticker, [$scharffScoreName => $score]);
+        $scharffScore = Calculator::caculateScharffScore($score);
+        $this->setScores($sticker, [$scharffScoreName => $score], $scharffScore);
 
         return $this;
     }
@@ -118,7 +116,7 @@ class ScharffScore
     {
         $this->processScore(
             $sticker,
-            'finanncials',
+            'financials',
             'shareholderEquity',
             'equity'
         );
@@ -162,7 +160,7 @@ class ScharffScore
         return $this->scores;
     }
 
-    public function setScores($sticker, $scores)
+    public function setScores($sticker, $scores, $scharffScore)
     {
         if (isset($this->getScores()[$sticker])) {
             $this->scores[$sticker] += $scores;
@@ -170,6 +168,7 @@ class ScharffScore
         else {
             $this->scores += [$sticker => $scores];
         }
+        $this->scores[$sticker]['scharffScore'] += $scharffScore;
 
         return $this;
     }
