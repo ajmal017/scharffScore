@@ -72,6 +72,19 @@ class StockController
         return $this;
     }
 
+    public function getLogo($sticker)
+    {
+        $logo = '';
+        if (!empty($this->getStockArrayData()) && isset($this->getStockArrayData()[$sticker])) {
+//            print_r($this->getStockArrayData()[$sticker]['logo']['url']);
+//            exit();
+            $logo = $this->getStockArrayData()[$sticker]['logo']['url'];
+        }
+
+        return $logo;
+    }
+
+
 
 
 

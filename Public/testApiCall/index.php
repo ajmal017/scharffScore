@@ -7,12 +7,30 @@
  */
 
 require_once("../includes/loaderBootstrap.php");
+$viewObject = new \View\BaseView(ROOT_DIR);
 
+$viewObject::renderIncludes();
 //Set URL filter for test
-$IEXApiControllerObj = new \Controller\IEXApi\IEXApiController(['cgc', 'acb', 'aapl', 'msft', 'SANW', 'TYHT', 'SMPL', 'XLV']);
+$IEXApiControllerObj = new \Controller\IEXApi\IEXApiController(['cgc', 'acb', 'aapl', 'msft', 'jcp', 'jnj',
+    'scsc', 'hpq','twtr', 'fb', 'dis', 'm']);
 //$stockControllerObj = new \Controller\Stocks\StockController();
 $stockControllerObj = new \Controller\Stocks\StockController($IEXApiControllerObj->query());
-echo "<pre>" . print_r($stockControllerObj->getScores(), true) . "</pre>";
+//echo "<pre>" . print_r($stockControllerObj->getScores(), true) . "</pre>";
+
+$scores = $stockControllerObj->getScores();
+//echo "<pre>" . print_r($stockControllerObj->getStockArrayData(), true) . "</pre>";
+
+
+
+foreach ($scores as $sticker => $score) {
+//    echo "<pre>" . print_r($sticker, true) . "</pre>";
+//    echo "<pre>" . print_r($stockControllerObj->getLogo($sticker), true) . "</pre>";
+    $html .= '<div class="scharffScoreContainer">';
+    $html .= '<img src="' . $stockControllerObj->getLogo($sticker) . '" />' . $score['scharffScore'];
+    $html .= '</div>';
+}
+
+echo $html;
 
 //echo $ScharffScoreObj;
 //,

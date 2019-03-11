@@ -25,6 +25,13 @@ class Loader
      */
     protected $modelDirectoryPath = array();
 
+    /**
+     * View Directory Path
+     *
+     * @var Array
+     * @access protected
+     */
+    protected $viewDirectoryPath = array();
 
     /**
      * Constructor
@@ -35,6 +42,7 @@ class Loader
     {
         $this->modelDirectoryPath      = MODEL_PATH;
         $this->controllerDirectoryPath = CONTROLLER_PATH;
+        $this->viewDirectoryPath = VIEW_PATH;
 
         try {
             spl_autoload_register([$this, autoload]);
@@ -53,6 +61,7 @@ class Loader
     {
         $this->autoloadDirectories($this->modelDirectoryPath);
         $this->autoloadDirectories($this->controllerDirectoryPath);
+        $this->autoloadDirectories($this->viewDirectoryPath);
     }
 
     /**
